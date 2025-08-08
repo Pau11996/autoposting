@@ -1,0 +1,38 @@
+# Environments
+.venv/
+venv/
+.env
+
+# Python cache/artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+build/
+dist/
+.eggs/
+
+# IDE/editor
+*.swp
+*.swo
+.idea/
+.vscode/
+.DS_Store
+
+# Logs
+*.log
+logs/
+
+# Test/lint caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local data
+/data/
+
+# Misc
+.cache/
