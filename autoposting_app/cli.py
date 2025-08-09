@@ -5,9 +5,12 @@ from typing import List
 from .config import load_config
 from .extract import extract_clean_text
 from .fetch_feeds import fetch_feed_entries
+from .logging import get_logger
 from .post_telegram import format_for_telegram, send_telegram_message
 from .store import filter_new_items, mark_posted
 from .summarize import summarize_items
+
+logger = get_logger("cli")
 
 
 def collect_items(max_articles: int) -> List[dict]:
@@ -34,7 +37,7 @@ def run(post: bool, offline: bool, max_articles: int) -> int:
     items = collect_items(max_articles=max_articles)
 
     if not items:
-        print("No new items found.")
+        logger.info("No new items found.")
         return 0
 
     # Determine language for summarization
@@ -79,18 +82,20 @@ def run(post: bool, offline: bool, max_articles: int) -> int:
 
     if post:
         if not (cfg.telegram_bot_token and cfg.telegram_chat_id):
-            print("Missing TG_BOT_TOKEN or TG_CHAT_ID. Aborting post.")
+            logger.error("Missing TG_BOT_TOKEN or TG_CHAT_ID. Aborting post.")
             return 2
         ok = send_telegram_message(cfg.telegram_bot_token, cfg.telegram_chat_id, tg_text)
         if ok:
             for it in items:
                 mark_posted(cfg.db_path, it["link"], it.get("title"))
-            print("Posted to Telegram.")
+            logger.info("Posted to Telegram.")
             return 0
         else:
-            print("Failed to post to Telegram.")
+            logger.error("Failed to post to Telegram.")
             return 1
     else:
+        logger.info("Dry run - would post:", extra={"telegram_text": tg_text})
+        # Still print to console for dry-run visibility
         print(tg_text)
         return 0
 

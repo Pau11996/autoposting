@@ -48,6 +48,10 @@ class AppConfig:
     # Posting schedule (UTC time)
     posting_hour: int = field(default_factory=lambda: int(os.getenv("POSTING_HOUR", "12")))
     posting_minute: int = field(default_factory=lambda: int(os.getenv("POSTING_MINUTE", "00")))
+    
+    # Logging configuration
+    log_level: str = field(default_factory=lambda: os.getenv("LOG_LEVEL", "INFO"))
+    log_format: str = field(default_factory=lambda: os.getenv("LOG_FORMAT", "json"))
 
     def rss_sources(self) -> List[str]:
         if self.rss_sources_csv:

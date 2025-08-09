@@ -90,6 +90,50 @@ python main.py --post --max-articles 6
 
 ---
 
+## Deploy to Fly.io
+
+Deploy as a background service that automatically posts daily digests:
+
+### Quick Deploy
+```bash
+# Install Fly.io CLI
+curl -L https://fly.io/install.sh | sh
+flyctl auth login
+
+# Create app and volume
+flyctl apps create autoposting
+flyctl volumes create autoposting_data --region ord --size 1
+
+# Set required secrets
+flyctl secrets set OPENAI_API_KEY="your_openai_api_key"
+flyctl secrets set TG_BOT_TOKEN="your_telegram_bot_token" 
+flyctl secrets set TG_CHAT_ID="your_telegram_chat_id"
+
+# Deploy
+flyctl deploy
+```
+
+### Features
+- 🕐 **Scheduled Posts**: Automatic daily posting at configurable UTC time (default: 12:00)
+- 💾 **Persistent Data**: SQLite database survives deployments via mounted volume
+- 🌍 **Multi-language**: Supports Russian translation (configurable)
+- 💰 **Cost Effective**: ~$2-4/month total cost
+- ⚙️ **Configurable**: All settings via Fly.io secrets
+
+### Configuration
+Set optional environment variables via Fly.io secrets:
+```bash
+flyctl secrets set POSTING_HOUR="19"        # 7 PM UTC
+flyctl secrets set POSTING_MINUTE="30"      # 7:30 PM UTC  
+flyctl secrets set LLM_MODEL="gpt-4o"       # Use GPT-4o instead of mini
+flyctl secrets set TARGET_LANGUAGE="english" # English instead of Russian
+flyctl secrets set TRANSLATE_POSTS="false"  # Disable translation
+```
+
+For complete deployment instructions, troubleshooting, and configuration options, see **[DEPLOYMENT.md](DEPLOYMENT.md)**.
+
+---
+
 ## Customize feeds
 - Set `RSS_SOURCES` to a comma-separated list of RSS URLs, or edit the defaults in `autoposting_app/news_sources.py`.
 

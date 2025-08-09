@@ -4,6 +4,9 @@ from datetime import datetime, timedelta, timezone
 
 from .cli import run
 from .config import load_config
+from .logging import get_logger
+
+logger = get_logger("scheduler")
 
 
 def seconds_until_target_utc(hour: int = 6, minute: int = 46) -> int:
@@ -22,22 +25,22 @@ def main() -> None:
     language_status = f"Russian translation: {'ON' if cfg.translate_posts else 'OFF'}"
     if cfg.translate_posts:
         language_status += f" (target: {cfg.target_language})"
-    print(f"[scheduler] Starting with {language_status}")
+    logger.info(f"Starting with {language_status}")
     
     while True:
         sleep_seconds = seconds_until_target_utc(cfg.posting_hour, cfg.posting_minute)
-        print(f"[scheduler] Sleeping {sleep_seconds}s until {cfg.posting_hour:02d}:{cfg.posting_minute:02d} UTC...")
+        logger.info(f"Sleeping {sleep_seconds}s until {cfg.posting_hour:02d}:{cfg.posting_minute:02d} UTC...")
         time.sleep(max(1, sleep_seconds))
         try:
             started = datetime.now(tz=timezone.utc).isoformat()
-            print(f"[scheduler] Running job at {started}")
+            logger.info(f"Running job at {started}")
             code = run(post=post_flag_env, offline=cfg.offline_mode, max_articles=cfg.max_articles)
             finished = datetime.now(tz=timezone.utc).isoformat()
-            print(f"[scheduler] Job finished with code={code} at {finished}")
+            logger.info(f"Job finished with code={code} at {finished}")
         except Exception as exc:  # noqa: BLE001 - broad to keep loop alive
             import traceback
 
-            print(f"[scheduler] Error during scheduled run: {exc}")
+            logger.error(f"Error during scheduled run: {exc}")
             traceback.print_exc()
         # Small guard to avoid immediate retrigger due to clock drift
         time.sleep(2)

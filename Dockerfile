@@ -1,9 +1,15 @@
 # syntax=docker/dockerfile:1
 FROM python:3.10-slim
 
+# Add labels for better Fly.io integration
+LABEL fly_launch_runtime="python"
+
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    PIP_NO_CACHE_DIR=1
+    PIP_NO_CACHE_DIR=1 \
+    PORT=8080 \
+    LOG_LEVEL=INFO \
+    LOG_FORMAT=json
 
 WORKDIR /app
 
