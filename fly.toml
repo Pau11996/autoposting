@@ -1,0 +1,37 @@
+# fly.toml app configuration file generated for autoposting
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+
+app = 'autoposting'
+primary_region = 'waw'
+
+[build]
+
+[processes]
+worker = "python -m autoposting_app.scheduler"
+
+[[mounts]]
+source = 'autoposting_data'
+destination = '/app/data'
+
+[env]
+# Application will use environment variables from Fly.io secrets
+DB_PATH = '/app/data/autoposting.db'
+POSTING_HOUR = '12'
+POSTING_MINUTE = '00'
+MAX_ARTICLES = '6'
+TARGET_LANGUAGE = 'russian'
+TRANSLATE_POSTS = 'true'
+LLM_MODEL = 'gpt-4o'
+OFFLINE_MODE = 'false'
+POST_TO_TG = 'true'
+LOG_LEVEL = 'INFO'
+LOG_FORMAT = 'json'
+
+[[vm]]
+cpu_kind = 'shared'
+cpus = 1
+memory_mb = 256
+
+# Restart policy for long-running worker
+[[restart]]
+policy = 'on-failure'

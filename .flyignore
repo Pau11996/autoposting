@@ -1,0 +1,59 @@
+# Fly.io ignore file - excludes files from deployment
+
+# Git
+.git/
+.gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+.pytest_cache/
+
+# Local development
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Documentation and examples
+README.md
+DEPLOYMENT.md
+*.md
+
+# Local data directory (use mounted volume instead)
+data/
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
