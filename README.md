@@ -45,22 +45,15 @@ docker build -t autoposting .
 Dry-run (no Telegram post, uses titles if no API key):
 ```bash
 docker run --rm \
-  -e MAX_ARTICLES=6 \
+  -e MAX_ARTICLES=2 \
   -e OFFLINE_MODE=true \
   -v "$(pwd)/data:/app/data" \
-  autoposting --offline --max-articles 6
+  autoposting --offline --max-articles 2
 ```
 
 Post to Telegram (live):
 ```bash
-docker run --rm \
-  -e OPENAI_API_KEY="sk-..." \
-  -e LLM_MODEL="gpt-4o-mini" \
-  -e TG_BOT_TOKEN="123456:ABC..." \
-  -e TG_CHAT_ID="-1001234567890" \
-  -e MAX_ARTICLES=6 \
-  -v "$(pwd)/data:/app/data" \
-  autoposting --post --max-articles 6
+ docker run --rm   --env-file .env   -v "$(pwd)/data:/app/data"   autoposting --post --max-articles 
 ```
 
 Override RSS sources:

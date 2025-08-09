@@ -19,5 +19,5 @@ COPY main.py ./
 RUN mkdir -p /app/data
 ENV DB_PATH=/app/data/autoposting.db
 
-# Default command; pass CLI flags like --offline or --post at runtime
-CMD ["python", "main.py"]
+# Run lightweight scheduler that keeps the container alive and triggers at 19:00 UTC daily
+ENTRYPOINT ["python", "-m", "autoposting_app.scheduler"]

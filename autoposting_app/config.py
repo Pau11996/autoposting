@@ -33,11 +33,21 @@ class AppConfig:
         default_factory=lambda: os.getenv("OFFLINE_MODE", "false").lower() in {"1", "true", "yes"}
     )
     db_path: str = field(default_factory=lambda: os.getenv("DB_PATH", "data/autoposting.db"))
+    
+    # Language and translation
+    target_language: str = field(default_factory=lambda: os.getenv("TARGET_LANGUAGE", "russian"))
+    translate_posts: bool = field(
+        default_factory=lambda: os.getenv("TRANSLATE_POSTS", "true").lower() in {"1", "true", "yes"}
+    )
 
     # Sources (CSV in env or default list)
     rss_sources_csv: Optional[str] = field(
         default_factory=lambda: os.getenv("RSS_SOURCES")
     )
+    
+    # Posting schedule (UTC time)
+    posting_hour: int = field(default_factory=lambda: int(os.getenv("POSTING_HOUR", "18")))
+    posting_minute: int = field(default_factory=lambda: int(os.getenv("POSTING_MINUTE", "00")))
 
     def rss_sources(self) -> List[str]:
         if self.rss_sources_csv:
