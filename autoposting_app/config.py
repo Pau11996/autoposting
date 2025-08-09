@@ -46,7 +46,7 @@ class AppConfig:
     )
     
     # Posting schedule (UTC time)
-    posting_hour: int = field(default_factory=lambda: int(os.getenv("POSTING_HOUR", "18")))
+    posting_hour: int = field(default_factory=lambda: int(os.getenv("POSTING_HOUR", "12")))
     posting_minute: int = field(default_factory=lambda: int(os.getenv("POSTING_MINUTE", "00")))
 
     def rss_sources(self) -> List[str]:

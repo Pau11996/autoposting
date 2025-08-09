@@ -1,5 +1,5 @@
 import argparse
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from typing import List
 
 from .config import load_config
@@ -13,14 +13,14 @@ from .summarize import summarize_items
 def collect_items(max_articles: int) -> List[dict]:
     cfg = load_config()
     entries = fetch_feed_entries(cfg.rss_sources(), max_per_feed=8)
-    # Keep only items published today in UTC
-    today_utc = datetime.now(tz=timezone.utc).date()
-    todays_entries = [
+    # Keep only items published yesterday in UTC (for daily digest)
+    yesterday_utc = (datetime.now(tz=timezone.utc) - timedelta(days=1)).date()
+    yesterdays_entries = [
         e
         for e in entries
-        if e.get("published") and e["published"].astimezone(timezone.utc).date() == today_utc
+        if e.get("published") and e["published"].astimezone(timezone.utc).date() == yesterday_utc
     ]
-    fresh = filter_new_items(cfg.db_path, todays_entries)
+    fresh = filter_new_items(cfg.db_path, yesterdays_entries)
     top = fresh[:max_articles]
     enriched = []
     for it in top:

@@ -1,26 +1,17 @@
-# Focused startup and business news sources
-# Curated for maximum relevance to entrepreneurs and business professionals
+# TechCrunch focused news sources
+# Selected categories for maximum relevance
 
-# Specialized source collections
-STARTUP_FOCUSED_SOURCES = [
-    "https://news.ycombinator.com/rss",                    # HackerNews - startup community
-    "https://feeds.feedburner.com/TechCrunch/startups",   # TechCrunch startups
-    "https://techcrunch.com/category/venture/feed/",      # TechCrunch venture capital
-    "https://venturebeat.com/feed/",                      # VentureBeat - startup news
-    "https://www.fastcompany.com/startup/rss",            # Fast Company startup
-    "https://feeds.feedburner.com/crunchbase_daily",      # Crunchbase funding data
+# TechCrunch RSS feeds for specific categories
+TECHCRUNCH_SOURCES = [
+    "https://techcrunch.com/category/startups/feed/",              # Startups
+    "https://techcrunch.com/category/venture/feed/",               # Venture Capital
+    "https://techcrunch.com/category/apps/feed/",                  # Apps
+    "https://techcrunch.com/category/artificial-intelligence/feed/", # AI
+    "https://techcrunch.com/category/enterprise/feed/",            # Enterprise
 ]
 
-BUSINESS_NEWS_SOURCES = [
-    "https://www.reuters.com/technology/rss",             # Reuters tech business
-    "https://feeds.a.dj.com/rss/WSJcomUSBusiness.xml",   # Wall Street Journal
-    "https://www.ft.com/rss/companies/technology",       # Financial Times tech
-    "https://www.fastcompany.com/technology/rss",        # Fast Company innovation
-    "https://www.inc.com/rss/technology.rss",            # Inc Magazine business
-]
-
-# FOCUSED DEFAULT: Startup + Business news only (user's preference)
-DEFAULT_RSS_SOURCES = STARTUP_FOCUSED_SOURCES + BUSINESS_NEWS_SOURCES
+# Use only TechCrunch sources
+DEFAULT_RSS_SOURCES = TECHCRUNCH_SOURCES
 
 # Alternative comprehensive source set (previous default)
 COMPREHENSIVE_SOURCES = [
