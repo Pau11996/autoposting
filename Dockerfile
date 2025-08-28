@@ -7,7 +7,7 @@ LABEL fly_launch_runtime="python"
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
-    PORT=8080 \
+    PORT=8000 \
     LOG_LEVEL=INFO \
     LOG_FORMAT=json
 
@@ -19,11 +19,13 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 
 # Copy application code
 COPY autoposting_app ./autoposting_app
+COPY api ./api
 COPY main.py ./
+COPY run_api.py ./
 
 # Create data directory for persistent state (mount a volume on /app/data)
 RUN mkdir -p /app/data
 ENV DB_PATH=/app/data/autoposting.db
 
-# Run lightweight scheduler that keeps the container alive and triggers at 19:00 UTC daily
-ENTRYPOINT ["python", "-m", "autoposting_app.scheduler"]
+# Default to running the API server, but can be overridden
+CMD ["python", "run_api.py"]
